@@ -51,8 +51,8 @@
                     </div>
                 </form>
                 <div class="mt-5">
-                    <button class="btn btn-outline-primary float-md-right">Next</button>
-                    <button class="btn btn-outline-secondary float-md-left">Previous</button>
+                    <button class="btn btn-outline-primary float-md-right" @click="saveAndNext">Next</button>
+                    <button class="btn btn-outline-secondary float-md-left" @click="backToPrevious">Previous</button>
                 </div>
             </div>
         </div>
@@ -88,6 +88,12 @@ export default {
         },
         deleteExperience(index) {
             this.Experiences.splice(index, 1)
+        },
+        saveAndNext() {
+            this.$emit('nextToFinal');
+        },
+        backToPrevious() {
+            this.$emit('backToBasic');
         }
     }
 }

@@ -1877,7 +1877,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Avatar"
+  name: "Avatar",
+  methods: {
+    backToPro: function backToPro() {
+      this.$emit('backToPro');
+    }
+  }
 });
 
 /***/ }),
@@ -1933,6 +1938,11 @@ __webpack_require__.r(__webpack_exports__);
     return {
       basicInfo: {}
     };
+  },
+  methods: {
+    saveAndNext: function saveAndNext() {
+      this.$emit('nextToPro', this.basicInfo);
+    }
   }
 });
 
@@ -1972,9 +1982,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Index"
+  name: "Index",
+  data: function data() {
+    return {
+      basicActive: true,
+      proActive: false,
+      finalActive: false,
+      data: []
+    };
+  },
+  methods: {
+    nextToPro: function nextToPro(basicInfo) {
+      this.proActive = true;
+      this.basicActive = false;
+      this.data.push(basicInfo);
+    },
+    backToBasic: function backToBasic() {
+      this.basicActive = true;
+      this.proActive = false;
+    },
+    nextToFinal: function nextToFinal() {
+      this.finalActive = true;
+      this.proActive = false;
+    },
+    backToPro: function backToPro() {
+      this.proActive = true;
+      this.finalActive = false;
+    }
+  }
 });
 
 /***/ }),
@@ -2103,6 +2139,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteExperience: function deleteExperience(index) {
       this.Experiences.splice(index, 1);
+    },
+    saveAndNext: function saveAndNext() {
+      this.$emit('nextToFinal');
+    },
+    backToPrevious: function backToPrevious() {
+      this.$emit('backToBasic');
     }
   }
 });
@@ -2115,34 +2157,13 @@ __webpack_require__.r(__webpack_exports__);
   \*****************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 Vue.component('lecturer-registration', __webpack_require__(/*! ./components/Index.vue */ "./resources/js/components/Index.vue").default);
 Vue.component('basic-information', __webpack_require__(/*! ./components/BasicInformation.vue */ "./resources/js/components/BasicInformation.vue").default);
 Vue.component('professional-information', __webpack_require__(/*! ./components/ProfessionalInformation.vue */ "./resources/js/components/ProfessionalInformation.vue").default);
 Vue.component('avatar', __webpack_require__(/*! ./components/Avatar.vue */ "./resources/js/components/Avatar.vue").default);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
 var app = new Vue({
   el: '#app'
 });
@@ -37880,61 +37901,64 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "mt-5" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header text-center" }, [
+        _vm._v("Basic Info")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-5" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-outline-primary float-md-right" },
+            [_vm._v("Save")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-secondary float-md-left",
+              on: { click: _vm.backToPro }
+            },
+            [_vm._v("Previous")]
+          )
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-5" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header text-center" }, [
-          _vm._v("Basic Info")
+    return _c("form", { staticClass: "mt-4" }, [
+      _c("div", { staticClass: "form-group row" }, [
+        _c("label", { staticClass: "col-sm-2 col-form-label" }, [
+          _vm._v("Avatar")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("form", { staticClass: "mt-4" }, [
-            _c("div", { staticClass: "form-group row" }, [
-              _c("label", { staticClass: "col-sm-2 col-form-label" }, [
-                _vm._v("Avatar")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-10" }, [
-                _c("input", {
-                  staticClass: "form-control-file",
-                  attrs: { type: "file" }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c("label", { staticClass: "col-sm-2 col-form-label" }, [
-                _vm._v("NID")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-10" }, [
-                _c("input", {
-                  staticClass: "form-control-file",
-                  attrs: { type: "file" }
-                })
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-5" }, [
-            _c(
-              "button",
-              { staticClass: "btn btn-outline-primary float-md-right" },
-              [_vm._v("Save")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-outline-secondary float-md-left" },
-              [_vm._v("Previous")]
-            )
-          ])
+        _c("div", { staticClass: "col-sm-10" }, [
+          _c("input", {
+            staticClass: "form-control-file",
+            attrs: { type: "file" }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("label", { staticClass: "col-sm-2 col-form-label" }, [
+          _vm._v("NID")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-10" }, [
+          _c("input", {
+            staticClass: "form-control-file",
+            attrs: { type: "file" }
+          })
         ])
       ])
     ])
@@ -38061,23 +38085,21 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(0)
+        _c("div", { staticClass: "mt-5" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-primary float-md-right",
+              on: { click: _vm.saveAndNext }
+            },
+            [_vm._v("Next")]
+          )
+        ])
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-5" }, [
-      _c("button", { staticClass: "btn btn-outline-primary float-md-right" }, [
-        _vm._v("Next")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38104,11 +38126,19 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _c("basic-information"),
+      _vm.basicActive
+        ? _c("basic-information", { on: { nextToPro: _vm.nextToPro } })
+        : _vm._e(),
       _vm._v(" "),
-      _c("professional-information"),
+      _vm.proActive
+        ? _c("professional-information", {
+            on: { backToBasic: _vm.backToBasic, nextToFinal: _vm.nextToFinal }
+          })
+        : _vm._e(),
       _vm._v(" "),
-      _c("avatar")
+      _vm.finalActive
+        ? _c("avatar", { on: { backToPro: _vm.backToPro } })
+        : _vm._e()
     ],
     1
   )
@@ -38514,27 +38544,30 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(0)
+        _c("div", { staticClass: "mt-5" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-primary float-md-right",
+              on: { click: _vm.saveAndNext }
+            },
+            [_vm._v("Next")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-secondary float-md-left",
+              on: { click: _vm.backToPrevious }
+            },
+            [_vm._v("Previous")]
+          )
+        ])
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-5" }, [
-      _c("button", { staticClass: "btn btn-outline-primary float-md-right" }, [
-        _vm._v("Next")
-      ]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-outline-secondary float-md-left" }, [
-        _vm._v("Previous")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

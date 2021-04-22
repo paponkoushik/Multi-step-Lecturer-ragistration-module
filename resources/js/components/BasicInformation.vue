@@ -24,7 +24,7 @@
                     </div>
                 </form>
                 <div class="mt-5">
-                    <button class="btn btn-outline-primary float-md-right">Next</button>
+                    <button class="btn btn-outline-primary float-md-right" @click="saveAndNext">Next</button>
                 </div>
             </div>
         </div>
@@ -38,6 +38,11 @@ export default {
     data() {
         return {
             basicInfo: {},
+        }
+    },
+    methods: {
+        saveAndNext() {
+            this.$emit('nextToPro', this.basicInfo)
         }
     }
 }

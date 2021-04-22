@@ -21,7 +21,7 @@
                 </form>
                 <div class="mt-5">
                     <button class="btn btn-outline-primary float-md-right">Save</button>
-                    <button class="btn btn-outline-secondary float-md-left">Previous</button>
+                    <button class="btn btn-outline-secondary float-md-left" @click="backToPro">Previous</button>
                 </div>
             </div>
         </div>
@@ -31,7 +31,12 @@
 
 <script>
 export default {
-    name: "Avatar"
+    name: "Avatar",
+    methods: {
+        backToPro() {
+            this.$emit('backToPro');
+        }
+    }
 }
 </script>
 

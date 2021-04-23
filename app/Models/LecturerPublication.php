@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LecturarPublication extends Model
+class LecturerPublication extends Model
 {
-    use HasFactory;
+    protected $fillable = ['title', 'link', 'lecturer_id', 'description'];
 }

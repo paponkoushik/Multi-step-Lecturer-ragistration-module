@@ -1983,10 +1983,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Index",
   data: function data() {
@@ -2107,7 +2103,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       proInfo: {},
       educations: [{
-        instituteName: '',
+        institute_name: '',
         qualification: '',
         result: ''
       }],
@@ -2117,7 +2113,7 @@ __webpack_require__.r(__webpack_exports__);
         description: ''
       }],
       Experiences: [{
-        instituteName: '',
+        institute_name: '',
         designation: '',
         description: ''
       }]
@@ -2126,7 +2122,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addEducation: function addEducation() {
       this.educations.push({
-        instituteName: '',
+        institute_name: '',
         qualification: '',
         result: ''
       });
@@ -2146,7 +2142,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     addExperience: function addExperience() {
       this.Experiences.push({
-        instituteName: '',
+        institute_name: '',
         designation: '',
         description: ''
       });
@@ -38210,13 +38206,13 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: education.instituteName,
-                          expression: "education.instituteName"
+                          value: education.institute_name,
+                          expression: "education.institute_name"
                         }
                       ],
                       staticClass: "form-control col-md-4",
                       attrs: { type: "text" },
-                      domProps: { value: education.instituteName },
+                      domProps: { value: education.institute_name },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
@@ -38224,7 +38220,7 @@ var render = function() {
                           }
                           _vm.$set(
                             education,
-                            "instituteName",
+                            "institute_name",
                             $event.target.value
                           )
                         }
@@ -38452,13 +38448,13 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: Experience.instituteName,
-                          expression: "Experience.instituteName"
+                          value: Experience.institute_name,
+                          expression: "Experience.institute_name"
                         }
                       ],
                       staticClass: "form-control col-md-4",
                       attrs: { type: "text" },
-                      domProps: { value: Experience.instituteName },
+                      domProps: { value: Experience.institute_name },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
@@ -38466,7 +38462,7 @@ var render = function() {
                           }
                           _vm.$set(
                             Experience,
-                            "instituteName",
+                            "institute_name",
                             $event.target.value
                           )
                         }

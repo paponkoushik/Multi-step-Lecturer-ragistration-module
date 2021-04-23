@@ -1,18 +1,14 @@
 <template>
     <div class="container">
-
-        <basic-information 
-            v-if="basicActive" 
+        <basic-information
+            v-if="basicActive"
             @nextToPro="nextToPro"
         />
-        
-
-        <professional-information 
-            v-if="proActive" 
-            @backToBasic="backToBasic" 
+        <professional-information
+            v-if="proActive"
+            @backToBasic="backToBasic"
             @nextToFinal="nextToFinal"
         />
-
         <avatar v-if="finalActive" @backToPro="backToPro" @save="save"/>
     </div>
 
@@ -53,10 +49,9 @@ export default {
             let formData = {
                 basic : this.basicInfo,
                 pro : this.proInfo,
-            }
+            };
             axios.post('/store', formData)
             .then(res=>{
-
             }).catch(err=>{})
         }
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLecturarPublicationsTable extends Migration
+class CreateLecturerPublicationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateLecturarPublicationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('lecturar_publications', function (Blueprint $table) {
+        Schema::create('lecturer_publications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lecturer_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('link')->nullable();
-            $table->string('discription')->nullable();
+            $table->foreignId('lecturer_id')->constrained()->cascadeOnDelete();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateLecturarPublicationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lecturar_publications');
+        Schema::dropIfExists('lecturer_publications');
     }
 }

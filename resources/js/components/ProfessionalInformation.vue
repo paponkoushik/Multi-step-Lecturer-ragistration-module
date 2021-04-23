@@ -9,7 +9,7 @@
                         <label class="col-sm-2 col-form-label">Educations</label>
                         <div class="col-sm-9" v-for="(education, index) in educations">
                             <div class="row">
-                                <input type="text" class="form-control col-md-4" v-model="education.instituteName">
+                                <input type="text" class="form-control col-md-4" v-model="education.institute_name">
                                 <input type="text" class="form-control col-md-4" v-model="education.qualification">
                                 <input type="text" class="form-control col-md-4" v-model="education.result">
                             </div>
@@ -39,7 +39,7 @@
                         <label class="col-sm-2 col-form-label">Experiences</label>
                         <div class="col-sm-9" v-for="(Experience, index) in Experiences">
                             <div class="row">
-                                <input type="text" class="form-control col-md-4" v-model="Experience.instituteName">
+                                <input type="text" class="form-control col-md-4" v-model="Experience.institute_name">
                                 <input type="text" class="form-control col-md-4" v-model="Experience.designation">
                                 <input type="text" class="form-control col-md-4" v-model="Experience.description">
                             </div>
@@ -65,14 +65,14 @@ export default {
     data() {
         return {
             proInfo: {},
-            educations: [{instituteName: '', qualification: '', result: ''}],
+            educations: [{institute_name: '', qualification: '', result: ''}],
             publications: [{title: '', link: '', description: ''}],
-            Experiences: [{instituteName: '', designation: '', description: ''}],
+            Experiences: [{institute_name: '', designation: '', description: ''}],
         }
     },
     methods: {
         addEducation() {
-            this.educations.push({instituteName: '', qualification: '', result: '',})
+            this.educations.push({institute_name: '', qualification: '', result: '',})
         },
         deleteEducation(index) {
             this.educations.splice(index, 1);
@@ -84,7 +84,7 @@ export default {
             this.publications.splice(index, 1);
         },
         addExperience() {
-            this.Experiences.push({instituteName: '', designation: '', description: '',})
+            this.Experiences.push({institute_name: '', designation: '', description: '',})
         },
         deleteExperience(index) {
             this.Experiences.splice(index, 1)
@@ -93,8 +93,8 @@ export default {
             let data = {
                 educations: this.educations,
                 publications: this.publications,
-                Experiences: this.Experiences  
-            } 
+                Experiences: this.Experiences
+            }
             this.$emit('nextToFinal', data);
         },
         backToPrevious() {

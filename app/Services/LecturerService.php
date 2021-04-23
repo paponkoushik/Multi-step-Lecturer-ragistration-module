@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Lecturer;
 use App\Models\LecturerEducation;
+use App\Models\LecturerExperience;
+use App\Models\LecturerPublication;
 
 class LecturerService
 {
@@ -24,12 +26,37 @@ class LecturerService
 
     public function attachEducations(): LecturerService
     {
-        $educations = collect(request()->input('pro')['educations'])
-            ->map(fn ($item) => array_merge(['lecturer_id' => $this->model->id], $item))
-            ->toArray();
+        $educations = $this->addLecturer(collect(request()->input('pro')['educations']));
 
         LecturerEducation::query()->insert($educations);
 
         return $this;
+    }
+
+    public function attachPublications(): LecturerService
+    {
+        $publications = $this->addLecturer(collect(request()->input('pro')['publications']));
+
+        LecturerPublication::query()->insert($publications);
+
+        return $this;
+    }
+
+    public function attachExperiences(): LecturerService
+    {
+        $experiences = $this->addLecturer(collect(request()->input('pro')['educations']));
+
+        LecturerExperience::query()->insert($experiences);
+
+        return $this;
+    }
+
+    private function addLecturer($collection)
+    {
+        return $collection
+            ->map(function ($item) {
+                $item['lecturer_id'] = $this->model->id;
+                return $item;
+            })->toArray();
     }
 }

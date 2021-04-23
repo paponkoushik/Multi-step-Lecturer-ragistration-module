@@ -25,6 +25,7 @@ class LecturerRegistration extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
+        dd(filled($request->input('pro')['publications']));
         $this->service->store();
         $this->service->attachEducations();
 //        $lecturer = Lecturer::query()->create($request->input('basic'));

@@ -16,7 +16,9 @@ class CreateLecturarExperiencesTable extends Migration
         Schema::create('lecturar_experiences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lecturer_id')->constrained()->cascadeOnDelete();
-            $table->string('value');
+            $table->string('institute_name');
+            $table->string('designation');
+            $table->string('descrioption')->nullable();
             $table->timestamps();
         });
     }

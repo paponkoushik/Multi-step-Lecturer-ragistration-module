@@ -1,7 +1,7 @@
 <template>
     <div class="mt-5">
         <div class="card">
-            <div class="card-header text-center">Basic Info</div>
+            <div class="card-header text-center">Final</div>
             <div class="card-body">
                 <form class="mt-4">
 
@@ -20,7 +20,7 @@
 
                 </form>
                 <div class="mt-5">
-                    <button class="btn btn-outline-primary float-md-right">Save</button>
+                    <button class="btn btn-outline-primary float-md-right" @click="save">Save</button>
                     <button class="btn btn-outline-secondary float-md-left" @click="backToPro">Previous</button>
                 </div>
             </div>
@@ -32,9 +32,18 @@
 <script>
 export default {
     name: "Avatar",
+    // data() {
+    //     return {
+
+    //     }
+    // },
     methods: {
         backToPro() {
             this.$emit('backToPro');
+        },
+        save() {
+            console.log('called');
+            this.$emit('save');
         }
     }
 }

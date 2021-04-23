@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLecturalEducationTable extends Migration
+class CreateLecturarEducationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateLecturalEducationTable extends Migration
      */
     public function up()
     {
-        Schema::create('lectural_education', function (Blueprint $table) {
+        Schema::create('lecturar_education', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lecturer_id')->constrained()->cascadeOnDelete();
-            $table->string('value');
+            $table->string('institute_name');
+            $table->string('qualification');
+            $table->string('result')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateLecturalEducationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lectural_education');
+        Schema::dropIfExists('lecturar_education');
     }
 }

@@ -1878,9 +1878,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Avatar",
+  // data() {
+  //     return {
+  //     }
+  // },
   methods: {
     backToPro: function backToPro() {
       this.$emit('backToPro');
+    },
+    save: function save() {
+      console.log('called');
+      this.$emit('save');
     }
   }
 });
@@ -1979,9 +1987,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Index",
   data: function data() {
@@ -1989,26 +1994,35 @@ __webpack_require__.r(__webpack_exports__);
       basicActive: true,
       proActive: false,
       finalActive: false,
-      data: []
+      basicInfo: {},
+      proInfo: {}
     };
   },
   methods: {
     nextToPro: function nextToPro(basicInfo) {
       this.proActive = true;
       this.basicActive = false;
-      this.data.push(basicInfo);
+      this.basicInfo = basicInfo;
     },
     backToBasic: function backToBasic() {
       this.basicActive = true;
       this.proActive = false;
     },
-    nextToFinal: function nextToFinal() {
+    nextToFinal: function nextToFinal(proInfo) {
       this.finalActive = true;
       this.proActive = false;
+      this.proInfo = proInfo;
     },
     backToPro: function backToPro() {
       this.proActive = true;
       this.finalActive = false;
+    },
+    save: function save() {
+      var formData = {
+        basic: this.basicInfo,
+        pro: this.proInfo
+      };
+      axios.post('/store', formData).then(function (res) {})["catch"](function (err) {});
     }
   }
 });
@@ -2141,7 +2155,12 @@ __webpack_require__.r(__webpack_exports__);
       this.Experiences.splice(index, 1);
     },
     saveAndNext: function saveAndNext() {
-      this.$emit('nextToFinal');
+      var data = {
+        educations: this.educations,
+        publications: this.publications,
+        Experiences: this.Experiences
+      };
+      this.$emit('nextToFinal', data);
     },
     backToPrevious: function backToPrevious() {
       this.$emit('backToBasic');
@@ -37903,9 +37922,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "mt-5" }, [
     _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header text-center" }, [
-        _vm._v("Basic Info")
-      ]),
+      _c("div", { staticClass: "card-header text-center" }, [_vm._v("Final")]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _vm._m(0),
@@ -37913,7 +37930,10 @@ var render = function() {
         _c("div", { staticClass: "mt-5" }, [
           _c(
             "button",
-            { staticClass: "btn btn-outline-primary float-md-right" },
+            {
+              staticClass: "btn btn-outline-primary float-md-right",
+              on: { click: _vm.save }
+            },
             [_vm._v("Save")]
           ),
           _vm._v(" "),
@@ -38137,7 +38157,7 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _vm.finalActive
-        ? _c("avatar", { on: { backToPro: _vm.backToPro } })
+        ? _c("avatar", { on: { backToPro: _vm.backToPro, save: _vm.save } })
         : _vm._e()
     ],
     1

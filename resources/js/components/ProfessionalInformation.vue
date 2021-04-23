@@ -90,7 +90,12 @@ export default {
             this.Experiences.splice(index, 1)
         },
         saveAndNext() {
-            this.$emit('nextToFinal');
+            let data = {
+                educations: this.educations,
+                publications: this.publications,
+                Experiences: this.Experiences  
+            } 
+            this.$emit('nextToFinal', data);
         },
         backToPrevious() {
             this.$emit('backToBasic');

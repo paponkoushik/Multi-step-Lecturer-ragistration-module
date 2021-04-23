@@ -4,19 +4,16 @@
         <basic-information 
             v-if="basicActive" 
             @nextToPro="nextToPro"
-        >
-        </basic-information>
+        />
+        
 
         <professional-information 
             v-if="proActive" 
             @backToBasic="backToBasic" 
             @nextToFinal="nextToFinal"
-        >
-        </professional-information>
+        />
 
-        <avatar v-if="finalActive" @backToPro="backToPro">
-
-        </avatar>
+        <avatar v-if="finalActive" @backToPro="backToPro" @save="save"/>
     </div>
 
 </template>
@@ -29,27 +26,38 @@ export default {
             basicActive: true,
             proActive: false,
             finalActive: false,
-            data: [],
+            basicInfo: {},
+            proInfo: {},
         }
     },
     methods: {
         nextToPro(basicInfo) {
             this.proActive = true;
             this.basicActive = false;
-            this.data.push(basicInfo);
+            this.basicInfo = basicInfo;
         },
         backToBasic() {
             this.basicActive = true;
             this.proActive = false;
         },
-        nextToFinal() {
+        nextToFinal(proInfo) {
             this.finalActive = true;
             this.proActive = false;
-
+            this.proInfo = proInfo;
         },
         backToPro() {
             this.proActive = true;
             this.finalActive = false;
+        },
+        save() {
+            let formData = {
+                basic : this.basicInfo,
+                pro : this.proInfo,
+            }
+            axios.post('/store', formData)
+            .then(res=>{
+
+            }).catch(err=>{})
         }
     }
 

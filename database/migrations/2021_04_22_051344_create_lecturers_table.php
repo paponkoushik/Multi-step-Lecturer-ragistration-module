@@ -17,10 +17,9 @@ class CreateLecturersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone');
-            $table->string('nid');
-            $table->string('avatar');
-            $table->string('publications')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('nid')->nullable();
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

@@ -3,9 +3,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lecturer;
 use App\Services\LecturerService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class LecturerRegistration extends Controller
@@ -17,18 +17,25 @@ class LecturerRegistration extends Controller
         $this->service = $service;
     }
 
-    public function lecturerView()
+    public function create()
     {
         return view('lecturer_registration');
     }
 
     public function store(Request $request)
     {
-//        dd($request->all());
-        dd(filled($request->input('pro')['publications']));
-        $this->service->store();
-        $this->service->attachEducations();
-//        $lecturer = Lecturer::query()->create($request->input('basic'));
-//        dd($lecturer);
+        $lecturer = DB::transaction(fn() => $this->service
+            ->createLecturer()
+            ->attachEducations()
+            ->attachExperiences()
+            ->attachPublications()
+        );
+
+////        dd($request->all());
+//        dd(filled($request->input('pro')['publications']));
+//        $this->service->store();
+//        $this->service->attachEducations();
+////        $lecturer = Lecturer::query()->create($request->input('basic'));
+////        dd($lecturer);
     }
 }

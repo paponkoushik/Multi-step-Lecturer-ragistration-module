@@ -6,6 +6,7 @@ use App\Models\Lecturer;
 use App\Models\LecturerEducation;
 use App\Models\LecturerExperience;
 use App\Models\LecturerPublication;
+use Illuminate\Support\Facades\DB;
 
 class LecturerService
 {
@@ -16,7 +17,7 @@ class LecturerService
         $this->model = $model;
     }
 
-    public function store(): LecturerService
+    public function createLecturer(): LecturerService
     {
         $this->model = $this->model->query()
             ->create(request()->input('basic'));

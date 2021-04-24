@@ -6,11 +6,13 @@ use App\Models\Lecturer;
 use App\Models\LecturerEducation;
 use App\Models\LecturerExperience;
 use App\Models\LecturerPublication;
-use Illuminate\Support\Facades\DB;
+use App\Services\Traits\FileHandler;
 
 class LecturerService
 {
-    Private $model;
+    use FileHandler;
+
+    protected $model;
 
     public function __construct(Lecturer $model)
     {
@@ -20,14 +22,22 @@ class LecturerService
     public function createLecturer(): LecturerService
     {
         $this->model = $this->model->query()
-            ->create(request()->input('basic'));
+            ->create($this->basicDataFiles());
 
         return $this;
     }
 
+    public function basicDataFiles(): array
+    {
+        $lecturer = request()->input('basic');
+        $lecturer['avatar'] = $this->storeFile(request()->file('basic')['avatar']);
+        $lecturer['nid'] = $this->storeFile(request()->file('basic')['nid'], 'nid');
+        return $lecturer;
+    }
+
     public function attachEducations(): LecturerService
     {
-        $educations = $this->addLecturer(collect(request()->input('pro')['educations']));
+        $educations = $this->addLecturer(request()->input('educations'));
 
         LecturerEducation::query()->insert($educations);
 
@@ -36,7 +46,7 @@ class LecturerService
 
     public function attachPublications(): LecturerService
     {
-        $publications = $this->addLecturer(collect(request()->input('pro')['publications']));
+        $publications = $this->addLecturer(request()->input('publications'));
 
         LecturerPublication::query()->insert($publications);
 
@@ -45,16 +55,16 @@ class LecturerService
 
     public function attachExperiences(): LecturerService
     {
-        $experiences = $this->addLecturer(collect(request()->input('pro')['educations']));
+        $experiences = $this->addLecturer(request()->input('experiences'));
 
         LecturerExperience::query()->insert($experiences);
 
         return $this;
     }
 
-    private function addLecturer($collection)
+    private function addLecturer($data): array
     {
-        return $collection
+        return collect($data)
             ->map(function ($item) {
                 $item['lecturer_id'] = $this->model->id;
                 return $item;

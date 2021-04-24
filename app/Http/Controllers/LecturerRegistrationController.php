@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class LecturerRegistration extends Controller
+class LecturerRegistrationController extends Controller
 {
-    Private $service;
+    protected $service;
 
     public function __construct(LecturerService $service)
     {
@@ -24,18 +24,12 @@ class LecturerRegistration extends Controller
 
     public function store(Request $request)
     {
-        $lecturer = DB::transaction(fn() => $this->service
+        DB::transaction(fn() => $this->service
             ->createLecturer()
             ->attachEducations()
             ->attachExperiences()
             ->attachPublications()
         );
-
-////        dd($request->all());
-//        dd(filled($request->input('pro')['publications']));
-//        $this->service->store();
-//        $this->service->attachEducations();
-////        $lecturer = Lecturer::query()->create($request->input('basic'));
-////        dd($lecturer);
+        
     }
 }

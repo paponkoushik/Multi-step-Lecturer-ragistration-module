@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\LecturerRegistration;
+use App\Http\Controllers\LecturerRegistrationController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [LecturerRegistration::class, 'create'])
+Route::get('/', [LecturerRegistrationController::class, 'create'])
     ->name('create.lecturer');
-Route::post('/store', [LecturerRegistration::class, 'store'])
+Route::post('/store', [LecturerRegistrationController::class, 'store'])
     ->name('store-lecturer');

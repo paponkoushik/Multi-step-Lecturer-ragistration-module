@@ -1878,17 +1878,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Avatar",
-  // data() {
-  //     return {
-  //     }
-  // },
+  data: function data() {
+    return {
+      files: {
+        avatar: '',
+        nid: ''
+      }
+    };
+  },
   methods: {
     backToPro: function backToPro() {
       this.$emit('backToPro');
     },
     save: function save() {
-      console.log('called');
-      this.$emit('save');
+      this.$emit('save', this.files);
+    },
+    onAvatarChange: function onAvatarChange(event) {
+      this.files.avatar = event.target.files[0];
+    },
+    onNidChange: function onNidChange(event) {
+      this.files.nid = event.target.files[0];
     }
   }
 });
@@ -1967,6 +1976,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _Helpers_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Helpers/helpers */ "./resources/js/components/Helpers/helpers.js");
 //
 //
 //
@@ -1983,6 +1993,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Index",
   data: function data() {
@@ -2013,12 +2024,17 @@ __webpack_require__.r(__webpack_exports__);
       this.proActive = true;
       this.finalActive = false;
     },
-    save: function save() {
-      var formData = {
+    save: function save(files) {
+      this.basicInfo.avatar = files.avatar;
+      this.basicInfo.nid = files.nid;
+      var data = {
         basic: this.basicInfo,
-        pro: this.proInfo
+        educations: this.proInfo.educations,
+        publications: this.proInfo.publications,
+        Experiences: this.proInfo.Experiences
       };
-      axios.post('/store', formData).then(function (res) {})["catch"](function (err) {});
+      data = (0,_Helpers_helpers__WEBPACK_IMPORTED_MODULE_0__.formDataAssigner)(new FormData(), data);
+      axios.post('/store', data).then(function (res) {})["catch"](function (err) {});
     }
   }
 });
@@ -2112,7 +2128,7 @@ __webpack_require__.r(__webpack_exports__);
         link: '',
         description: ''
       }],
-      Experiences: [{
+      experiences: [{
         institute_name: '',
         designation: '',
         description: ''
@@ -2141,20 +2157,20 @@ __webpack_require__.r(__webpack_exports__);
       this.publications.splice(index, 1);
     },
     addExperience: function addExperience() {
-      this.Experiences.push({
+      this.experiences.push({
         institute_name: '',
         designation: '',
         description: ''
       });
     },
     deleteExperience: function deleteExperience(index) {
-      this.Experiences.splice(index, 1);
+      this.experiences.splice(index, 1);
     },
     saveAndNext: function saveAndNext() {
       var data = {
         educations: this.educations,
         publications: this.publications,
-        Experiences: this.Experiences
+        experiences: this.experiences
       };
       this.$emit('nextToFinal', data);
     },
@@ -2226,6 +2242,40 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/Helpers/helpers.js":
+/*!****************************************************!*\
+  !*** ./resources/js/components/Helpers/helpers.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "formDataAssigner": () => (/* binding */ formDataAssigner)
+/* harmony export */ });
+var formDataAssigner = function formDataAssigner() {
+  var formData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new FormData();
+  var dataObject = arguments.length > 1 ? arguments[1] : undefined;
+  Object.keys(dataObject).map(function (key) {
+    if (dataObject[key] && !dataObject[key].length > 0 && Object.keys(dataObject[key]).length > 0) {
+      Object.keys(dataObject[key]).map(function (childKey) {
+        return formData.append(key + "[".concat(childKey, "]"), dataObject[key][childKey]);
+      });
+    } else if (Array.isArray(dataObject[key])) {
+      dataObject[key].map(function (el, index) {
+        Object.keys(el).map(function (objectKeys) {
+          formData.append(key + "[".concat(index, "][").concat(objectKeys, "]"), el[objectKeys]);
+        });
+      });
+    } else {
+      return formData.append(key, dataObject[key]);
+    }
+  });
+  return formData;
+};
 
 /***/ }),
 
@@ -37921,7 +37971,35 @@ var render = function() {
       _c("div", { staticClass: "card-header text-center" }, [_vm._v("Final")]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
-        _vm._m(0),
+        _c("form", { staticClass: "mt-4" }, [
+          _c("div", { staticClass: "form-group row" }, [
+            _c("label", { staticClass: "col-sm-2 col-form-label" }, [
+              _vm._v("Avatar")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-10" }, [
+              _c("input", {
+                staticClass: "form-control-file",
+                attrs: { type: "file" },
+                on: { change: _vm.onAvatarChange }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c("label", { staticClass: "col-sm-2 col-form-label" }, [
+              _vm._v("NID")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-10" }, [
+              _c("input", {
+                staticClass: "form-control-file",
+                attrs: { type: "file" },
+                on: { change: _vm.onNidChange }
+              })
+            ])
+          ])
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "mt-5" }, [
           _c(
@@ -37946,40 +38024,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("form", { staticClass: "mt-4" }, [
-      _c("div", { staticClass: "form-group row" }, [
-        _c("label", { staticClass: "col-sm-2 col-form-label" }, [
-          _vm._v("Avatar")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-10" }, [
-          _c("input", {
-            staticClass: "form-control-file",
-            attrs: { type: "file" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("label", { staticClass: "col-sm-2 col-form-label" }, [
-          _vm._v("NID")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-10" }, [
-          _c("input", {
-            staticClass: "form-control-file",
-            attrs: { type: "file" }
-          })
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38440,7 +38485,7 @@ var render = function() {
                 _vm._v("Experiences")
               ]),
               _vm._v(" "),
-              _vm._l(_vm.Experiences, function(Experience, index) {
+              _vm._l(_vm.experiences, function(experience, index) {
                 return _c("div", { staticClass: "col-sm-9" }, [
                   _c("div", { staticClass: "row" }, [
                     _c("input", {
@@ -38448,20 +38493,20 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: Experience.institute_name,
-                          expression: "Experience.institute_name"
+                          value: experience.institute_name,
+                          expression: "experience.institute_name"
                         }
                       ],
                       staticClass: "form-control col-md-4",
                       attrs: { type: "text" },
-                      domProps: { value: Experience.institute_name },
+                      domProps: { value: experience.institute_name },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
                           _vm.$set(
-                            Experience,
+                            experience,
                             "institute_name",
                             $event.target.value
                           )
@@ -38474,20 +38519,20 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: Experience.designation,
-                          expression: "Experience.designation"
+                          value: experience.designation,
+                          expression: "experience.designation"
                         }
                       ],
                       staticClass: "form-control col-md-4",
                       attrs: { type: "text" },
-                      domProps: { value: Experience.designation },
+                      domProps: { value: experience.designation },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
                           _vm.$set(
-                            Experience,
+                            experience,
                             "designation",
                             $event.target.value
                           )
@@ -38500,20 +38545,20 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: Experience.description,
-                          expression: "Experience.description"
+                          value: experience.description,
+                          expression: "experience.description"
                         }
                       ],
                       staticClass: "form-control col-md-4",
                       attrs: { type: "text" },
-                      domProps: { value: Experience.description },
+                      domProps: { value: experience.description },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
                           _vm.$set(
-                            Experience,
+                            experience,
                             "description",
                             $event.target.value
                           )
@@ -38522,7 +38567,7 @@ var render = function() {
                     })
                   ]),
                   _vm._v(" "),
-                  _vm.Experiences.length > 1
+                  _vm.experiences.length > 1
                     ? _c(
                         "button",
                         {

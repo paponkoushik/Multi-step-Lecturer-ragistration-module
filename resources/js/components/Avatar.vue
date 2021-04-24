@@ -8,13 +8,13 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Avatar</label>
                         <div class="col-sm-10">
-                            <input type="file" class="form-control-file"/>
+                            <input type="file" class="form-control-file" @change="onAvatarChange"/>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">NID</label>
                         <div class="col-sm-10">
-                            <input type="file" class="form-control-file"/>
+                            <input type="file" class="form-control-file" @change="onNidChange"/>
                         </div>
                     </div>
 
@@ -32,18 +32,26 @@
 <script>
 export default {
     name: "Avatar",
-    // data() {
-    //     return {
-
-    //     }
-    // },
+    data() {
+        return {
+            files: {
+                avatar: '',
+                nid: '',
+            }
+        }
+    },
     methods: {
         backToPro() {
             this.$emit('backToPro');
         },
         save() {
-            console.log('called');
-            this.$emit('save');
+            this.$emit('save', this.files);
+        },
+        onAvatarChange(event) {
+            this.files.avatar = event.target.files[0];
+        },
+        onNidChange(event) {
+            this.files.nid = event.target.files[0];
         }
     }
 }

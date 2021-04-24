@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import {formDataAssigner} from "./Helpers/helpers";
+
 export default {
     name: "Index",
     data() {
@@ -45,12 +47,21 @@ export default {
             this.proActive = true;
             this.finalActive = false;
         },
-        save() {
-            let formData = {
+        save(files) {
+
+            this.basicInfo.avatar = files.avatar;
+            this.basicInfo.nid = files.nid;
+
+            let data = {
                 basic : this.basicInfo,
-                pro : this.proInfo,
+                educations: this.proInfo.educations,
+                publications: this.proInfo.publications,
+                Experiences: this.proInfo.Experiences,
             };
-            axios.post('/store', formData)
+
+            data = formDataAssigner(new FormData, data);
+
+            axios.post('/store', data)
             .then(res=>{
             }).catch(err=>{})
         }

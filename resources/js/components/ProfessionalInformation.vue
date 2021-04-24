@@ -37,13 +37,13 @@
                     <!--Experiences-->
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Experiences</label>
-                        <div class="col-sm-9" v-for="(Experience, index) in Experiences">
+                        <div class="col-sm-9" v-for="(experience, index) in experiences">
                             <div class="row">
-                                <input type="text" class="form-control col-md-4" v-model="Experience.institute_name">
-                                <input type="text" class="form-control col-md-4" v-model="Experience.designation">
-                                <input type="text" class="form-control col-md-4" v-model="Experience.description">
+                                <input type="text" class="form-control col-md-4" v-model="experience.institute_name">
+                                <input type="text" class="form-control col-md-4" v-model="experience.designation">
+                                <input type="text" class="form-control col-md-4" v-model="experience.description">
                             </div>
-                            <button class="btn btn-outline-danger" v-if="Experiences.length > 1" @click.prevent="deleteExperience(index)">delete</button>
+                            <button class="btn btn-outline-danger" v-if="experiences.length > 1" @click.prevent="deleteExperience(index)">delete</button>
                         </div>
                         <div class="col-sm-1">
                             <button class="btn btn-outline-primary" @click.prevent="addExperience">Add</button>
@@ -67,7 +67,7 @@ export default {
             proInfo: {},
             educations: [{institute_name: '', qualification: '', result: ''}],
             publications: [{title: '', link: '', description: ''}],
-            Experiences: [{institute_name: '', designation: '', description: ''}],
+            experiences: [{institute_name: '', designation: '', description: ''}],
         }
     },
     methods: {
@@ -84,16 +84,16 @@ export default {
             this.publications.splice(index, 1);
         },
         addExperience() {
-            this.Experiences.push({institute_name: '', designation: '', description: '',})
+            this.experiences.push({institute_name: '', designation: '', description: '',})
         },
         deleteExperience(index) {
-            this.Experiences.splice(index, 1)
+            this.experiences.splice(index, 1)
         },
         saveAndNext() {
             let data = {
                 educations: this.educations,
                 publications: this.publications,
-                Experiences: this.Experiences
+                experiences: this.experiences
             }
             this.$emit('nextToFinal', data);
         },

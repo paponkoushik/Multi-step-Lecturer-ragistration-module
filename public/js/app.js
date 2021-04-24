@@ -1876,6 +1876,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Avatar",
   data: function data() {
@@ -1949,16 +1951,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "BasicInformation",
+  props: {
+    bInfo: {}
+  },
   data: function data() {
     return {
-      basicInfo: {}
+      basicInfo: {},
+      errors: []
     };
+  },
+  created: function created() {
+    if (!_.isEmpty(this.bInfo)) {
+      this.basicInfo = this.bInfo;
+    }
   },
   methods: {
     saveAndNext: function saveAndNext() {
-      this.$emit('nextToPro', this.basicInfo);
+      if (!this.basicInfo.name) {
+        this.errors.push("Name required.");
+      }
+
+      if (!this.basicInfo.email) {
+        this.errors.push('Email required.');
+      } else if (!this.validEmail(this.basicInfo.email)) {
+        this.errors.push('Valid email required.');
+      } else this.$emit('nextToPro', this.basicInfo);
+    },
+    validEmail: function validEmail(email) {
+      var type = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return type.test(email);
     }
   }
 });
@@ -1993,6 +2022,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Index",
@@ -2002,7 +2033,8 @@ __webpack_require__.r(__webpack_exports__);
       proActive: false,
       finalActive: false,
       basicInfo: {},
-      proInfo: {}
+      proInfo: {},
+      message: ''
     };
   },
   methods: {
@@ -2031,10 +2063,16 @@ __webpack_require__.r(__webpack_exports__);
         basic: this.basicInfo,
         educations: this.proInfo.educations,
         publications: this.proInfo.publications,
-        Experiences: this.proInfo.Experiences
+        experiences: this.proInfo.experiences
       };
       data = (0,_Helpers_helpers__WEBPACK_IMPORTED_MODULE_0__.formDataAssigner)(new FormData(), data);
-      axios.post('/store', data).then(function (res) {})["catch"](function (err) {});
+      axios.post('/store', data).then(function (_ref) {
+        var data = _ref.data;
+        window.alert(data.message);
+        window.location = '/';
+      })["catch"](function (errors) {
+        window.alert(errors.message);
+      });
     }
   }
 });
@@ -2113,66 +2151,109 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ProfessionalInformation",
+  props: {
+    pInfo: {}
+  },
   data: function data() {
     return {
-      proInfo: {},
-      educations: [{
-        institute_name: '',
-        qualification: '',
-        result: ''
-      }],
-      publications: [{
-        title: '',
-        link: '',
-        description: ''
-      }],
-      experiences: [{
-        institute_name: '',
-        designation: '',
-        description: ''
-      }]
+      proInfo: {
+        educations: [{
+          institute_name: '',
+          qualification: '',
+          result: ''
+        }],
+        publications: [{
+          title: '',
+          link: '',
+          description: ''
+        }],
+        experiences: [{
+          institute_name: '',
+          designation: '',
+          description: ''
+        }]
+      },
+      errors: []
     };
+  },
+  created: function created() {
+    if (!_.isEmpty(this.pInfo)) {
+      this.proInfo = this.pInfo;
+    }
   },
   methods: {
     addEducation: function addEducation() {
-      this.educations.push({
+      this.proInfo.educations.push({
         institute_name: '',
         qualification: '',
         result: ''
       });
     },
     deleteEducation: function deleteEducation(index) {
-      this.educations.splice(index, 1);
+      this.proInfo.educations.splice(index, 1);
     },
     addPublication: function addPublication() {
-      this.publications.push({
+      this.proInfo.publications.push({
         title: '',
         link: '',
         description: ''
       });
     },
     deletePublication: function deletePublication(index) {
-      this.publications.splice(index, 1);
+      this.proInfo.publications.splice(index, 1);
     },
     addExperience: function addExperience() {
-      this.experiences.push({
+      this.proInfo.experiences.push({
         institute_name: '',
         designation: '',
         description: ''
       });
     },
     deleteExperience: function deleteExperience(index) {
-      this.experiences.splice(index, 1);
+      this.proInfo.experiences.splice(index, 1);
     },
     saveAndNext: function saveAndNext() {
-      var data = {
-        educations: this.educations,
-        publications: this.publications,
-        experiences: this.experiences
-      };
-      this.$emit('nextToFinal', data);
+      if (_.isEmpty(this.proInfo.educations[0].institute_name)) {
+        this.errors.push("Education institute name is required.");
+      }
+
+      if (_.isEmpty(this.proInfo.educations[0].qualification)) {
+        this.errors.push("Education degree is required.");
+      }
+
+      if (_.isEmpty(this.proInfo.publications[0].title)) {
+        this.errors.push("publication title is required");
+      }
+
+      if (_.isEmpty(this.proInfo.experiences[0].institute_name)) {
+        this.errors.push("experience institute name is required");
+      }
+
+      if (_.isEmpty(this.proInfo.experiences[0].designation)) {
+        this.errors.push("experience designation is required");
+      } else {
+        this.$emit('nextToFinal', this.proInfo);
+      }
     },
     backToPrevious: function backToPrevious() {
       this.$emit('backToBasic');
@@ -37980,7 +38061,7 @@ var render = function() {
             _c("div", { staticClass: "col-sm-10" }, [
               _c("input", {
                 staticClass: "form-control-file",
-                attrs: { type: "file" },
+                attrs: { type: "file", accept: "image/x-png" },
                 on: { change: _vm.onAvatarChange }
               })
             ])
@@ -37994,7 +38075,7 @@ var render = function() {
             _c("div", { staticClass: "col-sm-10" }, [
               _c("input", {
                 staticClass: "form-control-file",
-                attrs: { type: "file" },
+                attrs: { type: "file", accept: "image/x-png" },
                 on: { change: _vm.onNidChange }
               })
             ])
@@ -38006,7 +38087,12 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-outline-primary float-md-right",
-              on: { click: _vm.save }
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.save($event)
+                }
+              }
             },
             [_vm._v("Save")]
           ),
@@ -38015,7 +38101,12 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-outline-secondary float-md-left",
-              on: { click: _vm.backToPro }
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.backToPro($event)
+                }
+              }
             },
             [_vm._v("Previous")]
           )
@@ -38055,12 +38146,26 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _c("form", { staticClass: "mt-4" }, [
+          _vm.errors.length
+            ? _c("p", { staticClass: "form-group" }, [
+                _c("b", [_vm._v("Please correct the following error(s):")]),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  _vm._l(_vm.errors, function(error) {
+                    return _c("li", [_vm._v(_vm._s(error))])
+                  }),
+                  0
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
           _c("div", { staticClass: "form-group row" }, [
             _c("label", { staticClass: "col-sm-2 col-form-label" }, [
               _vm._v("Name")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-sm-10" }, [
+            _c("div", { staticClass: "col-sm-9" }, [
               _c("input", {
                 directives: [
                   {
@@ -38071,7 +38176,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text" },
+                attrs: { type: "text", required: "" },
                 domProps: { value: _vm.basicInfo.name },
                 on: {
                   input: function($event) {
@@ -38090,7 +38195,7 @@ var render = function() {
               _vm._v("Email")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-sm-10" }, [
+            _c("div", { staticClass: "col-sm-9" }, [
               _c("input", {
                 directives: [
                   {
@@ -38101,7 +38206,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "email" },
+                attrs: { type: "email", required: "" },
                 domProps: { value: _vm.basicInfo.email },
                 on: {
                   input: function($event) {
@@ -38120,7 +38225,7 @@ var render = function() {
               _vm._v("Phone")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-sm-10" }, [
+            _c("div", { staticClass: "col-sm-9" }, [
               _c("input", {
                 directives: [
                   {
@@ -38131,7 +38236,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text" },
+                attrs: { type: "text", required: "" },
                 domProps: { value: _vm.basicInfo.phone },
                 on: {
                   input: function($event) {
@@ -38151,7 +38256,13 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-outline-primary float-md-right",
-              on: { click: _vm.saveAndNext }
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.saveAndNext($event)
+                }
+              }
             },
             [_vm._v("Next")]
           )
@@ -38188,11 +38299,15 @@ var render = function() {
     { staticClass: "container" },
     [
       _vm.basicActive
-        ? _c("basic-information", { on: { nextToPro: _vm.nextToPro } })
+        ? _c("basic-information", {
+            attrs: { "b-info": _vm.basicInfo },
+            on: { nextToPro: _vm.nextToPro }
+          })
         : _vm._e(),
       _vm._v(" "),
       _vm.proActive
         ? _c("professional-information", {
+            attrs: { "p-info": _vm.proInfo },
             on: { backToBasic: _vm.backToBasic, nextToFinal: _vm.nextToFinal }
           })
         : _vm._e(),
@@ -38235,6 +38350,20 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _c("form", { staticClass: "mt-4" }, [
+          _vm.errors.length
+            ? _c("p", { staticClass: "form-group" }, [
+                _c("b", [_vm._v("Please correct the following error(s):")]),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  _vm._l(_vm.errors, function(error) {
+                    return _c("li", [_vm._v(_vm._s(error))])
+                  }),
+                  0
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "div",
             { staticClass: "form-group row" },
@@ -38243,7 +38372,7 @@ var render = function() {
                 _vm._v("Educations")
               ]),
               _vm._v(" "),
-              _vm._l(_vm.educations, function(education, index) {
+              _vm._l(_vm.proInfo.educations, function(education, index) {
                 return _c("div", { staticClass: "col-sm-9" }, [
                   _c("div", { staticClass: "row" }, [
                     _c("input", {
@@ -38256,7 +38385,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", placeholder: "Institute name" },
                       domProps: { value: education.institute_name },
                       on: {
                         input: function($event) {
@@ -38282,7 +38411,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", placeholder: "Degree" },
                       domProps: { value: education.qualification },
                       on: {
                         input: function($event) {
@@ -38308,7 +38437,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", placeholder: "Result" },
                       domProps: { value: education.result },
                       on: {
                         input: function($event) {
@@ -38321,7 +38450,7 @@ var render = function() {
                     })
                   ]),
                   _vm._v(" "),
-                  _vm.educations.length > 1
+                  _vm.proInfo.educations.length > 1
                     ? _c(
                         "button",
                         {
@@ -38366,7 +38495,7 @@ var render = function() {
                 _vm._v("Publications")
               ]),
               _vm._v(" "),
-              _vm._l(_vm.publications, function(publication, index) {
+              _vm._l(_vm.proInfo.publications, function(publication, index) {
                 return _c("div", { staticClass: "col-sm-9" }, [
                   _c("div", { staticClass: "row" }, [
                     _c("input", {
@@ -38379,7 +38508,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", placeholder: "Title" },
                       domProps: { value: publication.title },
                       on: {
                         input: function($event) {
@@ -38401,7 +38530,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", placeholder: "Provide link" },
                       domProps: { value: publication.link },
                       on: {
                         input: function($event) {
@@ -38413,7 +38542,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _c("input", {
+                    _c("textarea", {
                       directives: [
                         {
                           name: "model",
@@ -38423,7 +38552,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { placeholder: "description" },
                       domProps: { value: publication.description },
                       on: {
                         input: function($event) {
@@ -38440,7 +38569,7 @@ var render = function() {
                     })
                   ]),
                   _vm._v(" "),
-                  _vm.publications.length > 1
+                  _vm.proInfo.publications.length > 1
                     ? _c(
                         "button",
                         {
@@ -38485,7 +38614,7 @@ var render = function() {
                 _vm._v("Experiences")
               ]),
               _vm._v(" "),
-              _vm._l(_vm.experiences, function(experience, index) {
+              _vm._l(_vm.proInfo.experiences, function(experience, index) {
                 return _c("div", { staticClass: "col-sm-9" }, [
                   _c("div", { staticClass: "row" }, [
                     _c("input", {
@@ -38498,7 +38627,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", placeholder: "Institute name" },
                       domProps: { value: experience.institute_name },
                       on: {
                         input: function($event) {
@@ -38524,7 +38653,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", placeholder: "Designation" },
                       domProps: { value: experience.designation },
                       on: {
                         input: function($event) {
@@ -38540,7 +38669,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _c("input", {
+                    _c("textarea", {
                       directives: [
                         {
                           name: "model",
@@ -38550,7 +38679,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control col-md-4",
-                      attrs: { type: "text" },
+                      attrs: { placeholder: "Description" },
                       domProps: { value: experience.description },
                       on: {
                         input: function($event) {
@@ -38567,7 +38696,7 @@ var render = function() {
                     })
                   ]),
                   _vm._v(" "),
-                  _vm.experiences.length > 1
+                  _vm.proInfo.experiences.length > 1
                     ? _c(
                         "button",
                         {

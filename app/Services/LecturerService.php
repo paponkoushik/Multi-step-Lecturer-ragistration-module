@@ -7,16 +7,35 @@ use App\Models\LecturerEducation;
 use App\Models\LecturerExperience;
 use App\Models\LecturerPublication;
 use App\Services\Traits\FileHandler;
+use App\Services\Traits\LecturerCreateRules;
 
 class LecturerService
 {
-    use FileHandler;
+    use FileHandler, LecturerCreateRules;
 
     protected $model;
 
     public function __construct(Lecturer $model)
     {
         $this->model = $model;
+    }
+
+    public function validate(): LecturerService
+    {
+        $this->checkValid(request()->input('basic'), $this->lecturerCreateRules());
+        $this->checkValid(request()->input('educations')[0], $this->lecturerEducationRules());
+        $this->checkValid(request()->input('experiences')[0], $this->lecturerExperienceRules());
+        $this->checkValid(request()->input('publications')[0], $this->lecturerPublicationRules());
+
+        return $this;
+    }
+
+    public function checkValid(array $array, array $rules)
+    {
+        validator(
+            $array,
+            $rules,
+        )->validate();
     }
 
     public function createLecturer(): LecturerService
@@ -30,8 +49,11 @@ class LecturerService
     public function basicDataFiles(): array
     {
         $lecturer = request()->input('basic');
-        $lecturer['avatar'] = $this->storeFile(request()->file('basic')['avatar']);
-        $lecturer['nid'] = $this->storeFile(request()->file('basic')['nid'], 'nid');
+
+        $lecturer['avatar'] = request()->basic['avatar'] ? $this->storeFile(request()->file('basic')['avatar']) : null;
+
+        $lecturer['nid'] = request()->basic['nid'] ? $this->storeFile(request()->file('basic')['nid'], 'nid') : null;
+
         return $lecturer;
     }
 

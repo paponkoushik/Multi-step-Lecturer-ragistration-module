@@ -4,9 +4,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\LecturerService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 
 class LecturerRegistrationController extends Controller
 {
@@ -22,14 +22,16 @@ class LecturerRegistrationController extends Controller
         return view('lecturer_registration');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         DB::transaction(fn() => $this->service
+            ->validate()
             ->createLecturer()
             ->attachEducations()
             ->attachExperiences()
             ->attachPublications()
         );
 
+        return response()->json(['message' => 'Data has been stored successfully']);
     }
 }

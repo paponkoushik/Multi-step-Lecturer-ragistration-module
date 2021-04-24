@@ -8,20 +8,22 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Avatar</label>
                         <div class="col-sm-10">
-                            <input type="file" class="form-control-file" @change="onAvatarChange"/>
+                            <input type="file" class="form-control-file" accept="image/x-png"
+                                   @change="onAvatarChange" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">NID</label>
                         <div class="col-sm-10">
-                            <input type="file" class="form-control-file" @change="onNidChange"/>
+                            <input type="file" class="form-control-file" accept="image/x-png"
+                                   @change="onNidChange" />
                         </div>
                     </div>
 
                 </form>
                 <div class="mt-5">
-                    <button class="btn btn-outline-primary float-md-right" @click="save">Save</button>
-                    <button class="btn btn-outline-secondary float-md-left" @click="backToPro">Previous</button>
+                    <button class="btn btn-outline-primary float-md-right" @click.prevent="save">Save</button>
+                    <button class="btn btn-outline-secondary float-md-left" @click.prevent="backToPro">Previous</button>
                 </div>
             </div>
         </div>

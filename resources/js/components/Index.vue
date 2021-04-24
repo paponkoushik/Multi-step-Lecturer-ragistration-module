@@ -2,10 +2,12 @@
     <div class="container">
         <basic-information
             v-if="basicActive"
+            :b-info="basicInfo"
             @nextToPro="nextToPro"
         />
         <professional-information
             v-if="proActive"
+            :p-info="proInfo"
             @backToBasic="backToBasic"
             @nextToFinal="nextToFinal"
         />
@@ -26,6 +28,7 @@ export default {
             finalActive: false,
             basicInfo: {},
             proInfo: {},
+            message: '',
         }
     },
     methods: {
@@ -56,14 +59,18 @@ export default {
                 basic : this.basicInfo,
                 educations: this.proInfo.educations,
                 publications: this.proInfo.publications,
-                Experiences: this.proInfo.Experiences,
+                experiences: this.proInfo.experiences,
             };
 
             data = formDataAssigner(new FormData, data);
 
             axios.post('/store', data)
-            .then(res=>{
-            }).catch(err=>{})
+            .then(({data})=>{
+                window.alert(data.message);
+                window.location = '/';
+            }).catch((errors)=>{
+                window.alert(errors.message);
+            })
         }
     }
 

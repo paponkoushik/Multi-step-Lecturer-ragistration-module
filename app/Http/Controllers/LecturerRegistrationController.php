@@ -30,6 +30,6 @@ class LecturerRegistrationController extends Controller
             ->attachExperiences()
             ->attachPublications()
         );
-        
+
     }
 }
